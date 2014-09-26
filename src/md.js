@@ -2,7 +2,7 @@
     'use strict';
 
     function Mdjs(OPTIONS) {
-        if (this instanceof mdjs) {
+        if (this instanceof Mdjs) {
             this.options = OPTIONS || {};
         } else {
             return new Mdjs(OPTIONS);
@@ -17,38 +17,67 @@
         };
 
         this.debug = function () {
-            if (this.options.debug) {
+            if (this.options.debug && typeof console !== 'undefined' && typeof console.log !== 'undefined') {
                 return this.options.debug;
+            }
+        };
+
+        this.liveUpdate = function() {
+            if(this.options.liveUpdate) {
+                return this.options.liveUpdate;
+            }
+        };
+
+        this.getInterval = function() {
+            if(this.options.interval && parseInt(this.options.interval) === this.options.interval) {
+                return this.options.interval;
+            } else {
+                return 5000;
             }
         };
     }
 
-    mdjs.prototype = {
+    Mdjs.prototype = {
         "init": function () {
             var closure = this;
             $(".mdjs").each(function () {
-                var target = $(this);
-                $.get(closure.baseUrl() + $(this).data("md-file"), function (data) {
-                    if (closure.debug()) {
-                        console.log('got file for target');
-                    }
-                    var converter = new Markdown.Converter();
-                    target.html(converter.makeHtml(data));
-                });
+                closure.on($(this));
             });
+        },
+        "on": function(target) {
+            var closure = this;
+            var dataFile = target.data("md-file");
+            $.get(closure.baseUrl() + dataFile, function (data) {
+                closure.log('we got back data for file: ' + dataFile);
+                var converter = new Markdown.Converter();
+                target.html(converter.makeHtml(data));
+                if(closure.liveUpdate()) {
+                    setTimeout(function() {
+                        closure.on(target);
+                    }, closure.getInterval());
+                }
+            }).fail(function() {
+                closure.log('something went wrong when fetching ' + dataFile);
+            });
+        },
+        "log": function() {
+            var closure = this;
+            if(closure.debug()) {
+                console.log.apply(console, arguments);
+            }
         }
     };
 
     try {
         if (exports) {
-            exports.mdjs = mdjs;
+            exports.Mdjs = Mdjs;
             return;
         }
     } catch (e) {
     }
     try {
         if (module) {
-            module.mdjs = mdjs;
+            module.Mdjs = Mdjs;
             return;
         }
     } catch (e) {
@@ -56,7 +85,7 @@
     try {
         if (require) {
             define([], function () {
-                return mdjs;
+                return Mdjs;
             });
             return;
         }
@@ -64,7 +93,7 @@
     }
     try {
         if (window) {
-            window.mdjs = mdjs;
+            window.Mdjs = Mdjs;
             return;
         }
     } catch (e) {
