@@ -1,6 +1,6 @@
 {
   "name": "md.js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "http://qkyrie.github.io/md.js",
   "authors": [
     "Quinten De Swaef <quintendeswaef@gmail.com>"
