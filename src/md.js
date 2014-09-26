@@ -1,25 +1,73 @@
-var mdjs = {};
+(function () {
+    'use strict';
 
-mdjs.init = function (mdjsOptions) {
+    function Mdjs(OPTIONS) {
+        if (this instanceof mdjs) {
+            this.options = OPTIONS || {};
+        } else {
+            return new Mdjs(OPTIONS);
+        }
 
-    mdjsOptions = mdjsOptions || {};
+        this.baseUrl = function () {
+            if (this.options.baseUrl) {
+                return this.options.baseUrl;
+            } else {
+                return "assets/md/";
+            }
+        };
 
-    var mdjsDebug = mdjsOptions.debug;
-    var baseUrl;
-    if(mdjsOptions.baseUrl) {
-        baseUrl = mdjsOptions.baseUrl;
-    } else {
-        baseUrl = "assets/md/";
+        this.debug = function () {
+            if (this.options.debug) {
+                return this.options.debug;
+            }
+        };
     }
 
-    $(".mdjs").each(function () {
-        var target = $(this);
-        $.get(baseUrl + $(this).data("md-file"), function (data) {
-            if(mdjsDebug) {
-                console.log('got file for target');
-            }
-            var converter = new Markdown.Converter();
-            target.html(converter.makeHtml(data));
-        });
-    });
-};
+    mdjs.prototype = {
+        "init": function () {
+            var closure = this;
+            $(".mdjs").each(function () {
+                var target = $(this);
+                $.get(closure.baseUrl() + $(this).data("md-file"), function (data) {
+                    if (closure.debug()) {
+                        console.log('got file for target');
+                    }
+                    var converter = new Markdown.Converter();
+                    target.html(converter.makeHtml(data));
+                });
+            });
+        }
+    };
+
+    try {
+        if (exports) {
+            exports.mdjs = mdjs;
+            return;
+        }
+    } catch (e) {
+    }
+    try {
+        if (module) {
+            module.mdjs = mdjs;
+            return;
+        }
+    } catch (e) {
+    }
+    try {
+        if (require) {
+            define([], function () {
+                return mdjs;
+            });
+            return;
+        }
+    } catch (e) {
+    }
+    try {
+        if (window) {
+            window.mdjs = mdjs;
+            return;
+        }
+    } catch (e) {
+    }
+
+})();
