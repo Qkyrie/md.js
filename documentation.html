@@ -55,24 +55,41 @@
 
 <!-- +++++ Projects Section +++++ -->
 
-<div class="container pt">
-    <div class="row mt centered">
-        <div class="col-lg-6">
-            <h3>Markdown Documentation</h3>
-            <hr />
-            <pre>###Coming Soon
-			</pre>
-        </div>
-
-        <div class="col-lg-6">
-            <h3>Documentation output</h3>
-            <hr />
-            <div class="mdjs" data-md-file="coming_soon.md"></div>
+<div id="white">
+    <div class="container">
+        <div class="row">
+            <div class="mdjs" data-md-file="prerequisites.md"></div>
         </div>
     </div>
-    <!-- /row -->
 </div>
-<!-- /container -->
+
+<div id="grey">
+    <div class="container">
+        <div class="row">
+            <div class="mdjs" data-md-file="including.md"></div>
+        </div>
+    </div>
+</div>
+
+<div id="white">
+    <div class="container">
+        <div class="row">
+            <div class="mdjs" data-md-file="basic-configuration.md"></div>
+        </div>
+    </div>
+</div>
+
+<div id="grey">
+    <div class="container">
+        <div class="row">
+            <h2>Extended Configuration</h2>
+            <hr />
+            <div class="mdjs" data-md-file="extended-configuration.md"></div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
 
 
 <!-- +++++ Footer Section +++++ -->
@@ -123,7 +140,7 @@
 <script src="assets/js/md.min.js"></script>
 
 <script type="application/javascript">
-    mdjs.init();
+    Mdjs().init();
 </script>
 </body>
 </html>
