@@ -1,5 +1,5 @@
 {
-  "name": "mdjs",
+  "name": "md.js",
   "version": "1.0.0",
   "homepage": "http://qkyrie.github.io/md.js",
   "authors": [

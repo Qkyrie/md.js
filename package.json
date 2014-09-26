@@ -1,5 +1,5 @@
 {
-  "name": "md.js",
+  "name": "md",
   "version": "1.0.0",
   "description": "Markdown Documentation directly converted to HTML in JS",
   "main": "index.js",
