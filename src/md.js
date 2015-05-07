@@ -47,18 +47,24 @@
         "on": function(target) {
             var closure = this;
             var dataFile = target.data("md-file");
-            $.get(closure.baseUrl() + dataFile, function (data) {
-                closure.log('we got back data for file: ' + dataFile);
+            if(dataFile !== undefined && dataFile !== null) {
+                $.get(closure.baseUrl() + dataFile, function (data) {
+                    closure.log('we got back data for file: ' + dataFile);
+                    var converter = new Markdown.Converter();
+                    target.html(converter.makeHtml(data));
+                    if(closure.liveUpdate()) {
+                        setTimeout(function() {
+                            closure.on(target);
+                        }, closure.getInterval());
+                    }
+                }).fail(function() {
+                    closure.log('something went wrong when fetching ' + dataFile);
+                });
+            } else {
+                closure.log('not using a data file, simple now');
                 var converter = new Markdown.Converter();
-                target.html(converter.makeHtml(data));
-                if(closure.liveUpdate()) {
-                    setTimeout(function() {
-                        closure.on(target);
-                    }, closure.getInterval());
-                }
-            }).fail(function() {
-                closure.log('something went wrong when fetching ' + dataFile);
-            });
+                target.html(converter.makeHtml(target.html()));
+            }
         },
         "log": function() {
             var closure = this;
