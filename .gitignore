@@ -1,3 +1,4 @@
 distrib/
 .idea/
 md.js.iml
+*.log
